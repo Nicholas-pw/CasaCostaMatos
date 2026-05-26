@@ -1,0 +1,5023 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Casa Costa Matos — ONG que transforma vidas através da Educação, Cultura, Saúde e Assistência Social no Rio de Janeiro."
+    />
+    <title>Casa Costa Matos — Transformando Vidas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --canvas: #f5f2ed;
+        --canvas-2: #edeae3;
+        --canvas-pure: #faf8f5;
+        --ink: #1a1e25;
+        --ink-soft: #2e3340;
+        --ink-muted: #5c6370;
+        --ink-faint: #9099a8;
+        --steel: #2c5282;
+        --steel-light: #c8d8ec;
+        --steel-pale: #e8f0f8;
+        --steel-deep: #1a3a5c;
+        --steel-mid: #4a7ab5;
+        --warm: #7a6245;
+        --warm-light: #e4dbd0;
+        --sage: #3d6b52;
+        --sage-light: #d4e8dc;
+        --line: rgba(30, 40, 60, 0.1);
+        --line-s: rgba(30, 40, 60, 0.07);
+        --shadow-xs: 0 1px 6px rgba(26, 30, 37, 0.07);
+        --shadow-sm: 0 3px 16px rgba(26, 30, 37, 0.09);
+        --shadow-md: 0 8px 36px rgba(26, 30, 37, 0.11);
+        --shadow-lg: 0 20px 60px rgba(26, 30, 37, 0.13);
+        --radius-sm: 6px;
+        --radius: 12px;
+        --radius-lg: 20px;
+        --radius-xl: 30px;
+        --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+        --ease-out: cubic-bezier(0, 0, 0.2, 1);
+        --tr: all 0.4s var(--ease);
+        --font-serif: "Playfair Display", Georgia, serif;
+        --font-sans: "DM Sans", system-ui, sans-serif;
+        --navbar-h: 72px;
+      }
+
+      [data-theme="dark"] {
+        --canvas: #181c22;
+        --canvas-2: #1d2230;
+        --canvas-pure: #13171e;
+        --ink: #eae6de;
+        --ink-soft: #bbc4d0;
+        --ink-muted: #7e8fa0;
+        --steel-light: #1c2d3e;
+        --steel-pale: #172436;
+        --warm-light: #2a2318;
+        --sage-light: #1a2e22;
+        --line: rgba(255, 255, 255, 0.07);
+        --line-s: rgba(255, 255, 255, 0.04);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        background: var(--canvas-pure);
+        color: var(--ink);
+        overflow-x: hidden;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+        transition:
+          background 0.4s,
+          color 0.4s;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      /* SVG ICON HELPER */
+      .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .icon svg {
+        display: block;
+      }
+
+      /* SKIP */
+      .skip-link {
+        position: absolute;
+        top: -60px;
+        left: 20px;
+        z-index: 9999;
+        background: var(--steel);
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: var(--radius-sm);
+        font-weight: 500;
+        transition: top 0.3s;
+      }
+
+      .skip-link:focus {
+        top: 20px;
+      }
+
+      /* LOADER */
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: var(--canvas-pure);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 24px;
+        transition:
+          opacity 0.8s var(--ease),
+          visibility 0.8s;
+      }
+
+      #loader.out {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .loader-logo {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .loader-mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: var(--steel-deep);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .loader-wordmark {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--steel-deep);
+        letter-spacing: 0.04em;
+        animation: breath 2s ease infinite;
+      }
+
+      .loader-rule {
+        width: 0;
+        height: 1px;
+        background: var(--steel-mid);
+        animation: expandR 2s ease forwards;
+      }
+
+      .loader-sub {
+        font-size: 0.7rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        animation: breath 2s ease infinite 0.3s;
+      }
+
+      @keyframes expandR {
+        to {
+          width: 120px;
+        }
+      }
+
+      @keyframes breath {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      /* A11Y BAR */
+      .a11y-bar {
+        position: fixed;
+        right: 20px;
+        bottom: 96px;
+        z-index: 990;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .a11y-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--canvas-pure);
+        border: 1px solid var(--line);
+        color: var(--ink-muted);
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+        transition: var(--tr);
+      }
+
+      .a11y-btn:hover {
+        background: var(--steel);
+        color: #fff;
+        border-color: var(--steel);
+      }
+
+      /* WA */
+      .wa-float {
+        position: fixed;
+        bottom: 24px;
+        right: 20px;
+        z-index: 990;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #3aab6d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(58, 171, 109, 0.3);
+        transition: var(--tr);
+      }
+
+      .wa-float:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 32px rgba(58, 171, 109, 0.45);
+      }
+
+      /* NAVBAR */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        height: var(--navbar-h);
+        display: flex;
+        align-items: center;
+        padding: 0 6%;
+        transition:
+          background 0.5s var(--ease),
+          box-shadow 0.5s,
+          border-color 0.5s;
+        border-bottom: 1px solid transparent;
+      }
+
+      .navbar.at-top {
+        background: transparent;
+      }
+
+      .navbar.scrolled {
+        background: rgba(250, 248, 245, 0.95);
+        backdrop-filter: blur(20px) saturate(1.6);
+        -webkit-backdrop-filter: blur(20px) saturate(1.6);
+        border-bottom-color: var(--line);
+        box-shadow: 0 1px 24px rgba(26, 30, 37, 0.07);
+      }
+
+      [data-theme="dark"] .navbar.scrolled {
+        background: rgba(19, 23, 30, 0.95);
+      }
+
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--tr);
+        backdrop-filter: blur(6px);
+      }
+
+      .navbar.scrolled .logo-mark {
+        border-color: var(--line);
+        background: var(--steel-pale);
+      }
+
+      .logo-name {
+        font-family: var(--font-serif);
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        letter-spacing: 0.02em;
+        transition: color 0.4s;
+        line-height: 1.2;
+      }
+
+      .navbar.scrolled .logo-name {
+        color: var(--ink);
+      }
+
+      .logo-tagline {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.4s;
+        line-height: 1;
+      }
+
+      .navbar.scrolled .logo-tagline {
+        color: var(--ink-muted);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-link {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+        color: rgba(255, 255, 255, 0.72);
+        border-radius: 7px;
+        transition: var(--tr);
+      }
+
+      .navbar.scrolled .nav-link {
+        color: var(--ink-soft);
+      }
+
+      .nav-link:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .navbar.scrolled .nav-link:hover {
+        color: var(--steel);
+        background: var(--steel-pale);
+      }
+
+      .btn-nav-cta {
+        margin-left: 10px;
+        padding: 9px 20px;
+        border-radius: 7px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        color: rgba(255, 255, 255, 0.88);
+        transition: var(--tr);
+      }
+
+      .btn-nav-cta:hover {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+      }
+
+      .navbar.scrolled .btn-nav-cta {
+        border-color: var(--steel);
+        color: var(--steel);
+      }
+
+      .navbar.scrolled .btn-nav-cta:hover {
+        background: var(--steel);
+        color: #fff;
+      }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.8);
+        transition: var(--tr);
+      }
+
+      .navbar.scrolled .hamburger span {
+        background: var(--ink-soft);
+      }
+
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+
+      .mobile-nav {
+        position: fixed;
+        inset: 0;
+        top: var(--navbar-h);
+        z-index: 899;
+        background: var(--canvas-pure);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 40px 32px;
+        opacity: 0;
+        transform: translateY(-12px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s;
+      }
+
+      .mobile-nav.open {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .mobile-nav a {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        font-weight: 500;
+        color: var(--ink-soft);
+        padding: 10px 32px;
+        border-radius: 12px;
+        width: 100%;
+        text-align: center;
+        transition: var(--tr);
+      }
+
+      .mobile-nav a:hover {
+        color: var(--steel);
+        background: var(--steel-pale);
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 108px 6%;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.67rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--steel-mid);
+        margin-bottom: 22px;
+      }
+
+      .chip::before {
+        content: "";
+        display: block;
+        width: 22px;
+        height: 1px;
+        background: var(--steel-mid);
+      }
+
+      .h-display {
+        font-family: var(--font-serif);
+        font-size: clamp(2.4rem, 5vw, 3.8rem);
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        margin-bottom: 20px;
+      }
+
+      .h-display em {
+        font-style: italic;
+        font-weight: 400;
+        color: var(--steel);
+      }
+
+      .h-section {
+        font-family: var(--font-serif);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        line-height: 1.15;
+        color: var(--ink);
+        letter-spacing: -0.015em;
+        margin-bottom: 16px;
+      }
+
+      .h-section em {
+        font-style: italic;
+        font-weight: 400;
+        color: var(--steel);
+      }
+
+      .body-lead {
+        font-size: 1rem;
+        color: var(--ink-muted);
+        line-height: 1.85;
+        font-weight: 300;
+      }
+
+      /* REVEAL */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal-l {
+        opacity: 0;
+        transform: translateX(-28px);
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .reveal-l.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal-r {
+        opacity: 0;
+        transform: translateX(28px);
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .reveal-r.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* BUTTONS */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 13px 30px;
+        border-radius: 7px;
+        background: var(--steel-deep);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        transition: var(--tr);
+        box-shadow: 0 4px 16px rgba(26, 58, 92, 0.22);
+      }
+
+      .btn-primary:hover {
+        background: var(--steel);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 26px rgba(26, 58, 92, 0.32);
+      }
+
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 12px 30px;
+        border-radius: 7px;
+        border: 1.5px solid rgba(255, 255, 255, 0.36);
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transition: var(--tr);
+      }
+
+      .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding-top: var(--navbar-h);
+        background: var(--steel-deep);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 70% at 78% 38%,
+            rgba(100, 145, 190, 0.2) 0%,
+            transparent 68%
+          ),
+          radial-gradient(
+            ellipse 55% 65% at 8% 82%,
+            rgba(44, 82, 130, 0.28) 0%,
+            transparent 62%
+          ),
+          linear-gradient(155deg, #1e3254 0%, #172b47 45%, #243858 100%);
+        z-index: 0;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.022) 1px,
+            transparent 1px
+          );
+        background-size: 56px 56px;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 80px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.67rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7aadcf;
+        margin-bottom: 26px;
+        border: 1px solid rgba(122, 173, 207, 0.28);
+        padding: 7px 15px;
+        border-radius: 4px;
+        background: rgba(122, 173, 207, 0.07);
+      }
+
+      .eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #7aadcf;
+        animation: breath 2.5s ease infinite;
+      }
+
+      .hero-title {
+        font-family: var(--font-serif);
+        font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+        font-weight: 700;
+        line-height: 1.09;
+        letter-spacing: -0.02em;
+        color: rgba(255, 255, 255, 0.94);
+        margin-bottom: 26px;
+      }
+
+      .hero-title em {
+        font-style: italic;
+        font-weight: 400;
+        color: rgba(180, 210, 235, 0.82);
+      }
+
+      .hero-title strong {
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .hero-sub {
+        font-size: 0.98rem;
+        font-weight: 300;
+        line-height: 1.88;
+        color: rgba(255, 255, 255, 0.58);
+        margin-bottom: 46px;
+        max-width: 476px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 60px;
+      }
+
+      .hero-metrics {
+        display: flex;
+        gap: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 34px;
+      }
+
+      .hero-metric {
+        flex: 1;
+        padding-right: 26px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .hero-metric:last-child {
+        border-right: none;
+        padding-right: 0;
+        padding-left: 26px;
+      }
+
+      .hero-metric:first-child {
+        padding-left: 0;
+      }
+
+      .metric-num {
+        font-family: var(--font-serif);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1;
+        margin-bottom: 6px;
+        letter-spacing: -0.02em;
+      }
+
+      .metric-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.42);
+      }
+
+      .hero-card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-lg);
+        padding: 2px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        animation: cardFloat 7s ease-in-out infinite;
+      }
+
+      @keyframes cardFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .hero-card-inner {
+        border-radius: calc(var(--radius-lg) - 2px);
+        overflow: hidden;
+      }
+
+      .hero-img-area {
+        aspect-ratio: 16/10;
+        background: linear-gradient(
+          145deg,
+          rgba(36, 58, 88, 0.8) 0%,
+          rgba(100, 145, 190, 0.35) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-img-area::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 40%,
+          rgba(16, 26, 42, 0.72) 100%
+        );
+      }
+
+      .hero-img-icon {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-card-foot {
+        padding: 18px 22px;
+        background: rgba(16, 26, 44, 0.62);
+        backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .hero-card-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #5bcc8a;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 3px rgba(91, 204, 138, 0.22);
+        animation: breath 2s ease infinite;
+      }
+
+      .hero-card-status-text {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.58);
+        font-weight: 300;
+      }
+
+      .hero-chip {
+        position: absolute;
+        z-index: 10;
+        background: rgba(248, 246, 242, 0.96);
+        border-radius: 10px;
+        padding: 12px 17px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(8px);
+      }
+
+      .hero-chip-1 {
+        top: -16px;
+        right: 20px;
+      }
+
+      .hero-chip-2 {
+        bottom: 60px;
+        left: -24px;
+      }
+
+      .chip-val {
+        font-family: var(--font-serif);
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--steel-deep);
+        line-height: 1;
+      }
+
+      .chip-lab {
+        font-size: 0.63rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-top: 3px;
+      }
+
+      /* RIBBON */
+      .ribbon {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 48px 6%;
+      }
+
+      .ribbon-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .ribbon-stat {
+        background: var(--canvas-2);
+        padding: 32px 40px;
+        text-align: center;
+      }
+
+      .ribbon-num {
+        font-family: var(--font-serif);
+        font-size: 2.9rem;
+        font-weight: 700;
+        color: var(--steel-deep);
+        line-height: 1;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+      }
+
+      .ribbon-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+      }
+
+      /* ABOUT */
+      .about {
+        background: var(--canvas-pure);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 96px;
+        align-items: start;
+      }
+
+      .about-visual-wrap {
+        position: sticky;
+        top: 108px;
+      }
+
+      .about-visual-main {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        aspect-ratio: 3/4;
+        background: linear-gradient(
+          160deg,
+          var(--steel-light) 0%,
+          var(--canvas-2) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        position: relative;
+      }
+
+      .about-visual-main::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 50%,
+          rgba(44, 82, 130, 0.07) 100%
+        );
+      }
+
+      .about-visual-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        background: rgba(250, 248, 245, 0.94);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 16px 20px;
+        border: 1px solid var(--line);
+      }
+
+      .badge-val {
+        font-family: var(--font-serif);
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--steel-deep);
+        line-height: 1;
+      }
+
+      .badge-txt {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-top: 4px;
+      }
+
+      .about-content {
+        padding-top: 6px;
+      }
+
+      .about-body {
+        font-size: 0.97rem;
+        font-weight: 300;
+        color: var(--ink-soft);
+        line-height: 1.9;
+        margin-bottom: 44px;
+      }
+
+      .timeline {
+        border-left: 1px solid var(--line);
+        padding-left: 30px;
+      }
+
+      .tl-item {
+        position: relative;
+        margin-bottom: 34px;
+      }
+
+      .tl-item::before {
+        content: "";
+        position: absolute;
+        left: -36px;
+        top: 6px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--steel-pale);
+        border: 2px solid var(--steel-mid);
+      }
+
+      .tl-year {
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--steel-mid);
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      .tl-desc {
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+        line-height: 1.75;
+        font-weight: 300;
+      }
+
+      /* MVV */
+      .mvv {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .mvv-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--line);
+        margin-top: 60px;
+      }
+
+      .mvv-card {
+        background: var(--canvas-2);
+        padding: 50px 42px;
+        position: relative;
+        overflow: hidden;
+        transition: var(--tr);
+      }
+
+      .mvv-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: transparent;
+        transition: background 0.4s;
+      }
+
+      .mvv-card:hover {
+        background: var(--canvas-pure);
+      }
+
+      .mvv-card:hover::before {
+        background: var(--steel-mid);
+      }
+
+      .mvv-label {
+        font-size: 0.63rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--steel-mid);
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .mvv-label::before {
+        content: "";
+        display: block;
+        width: 16px;
+        height: 1px;
+        background: currentColor;
+      }
+
+      .mvv-heading {
+        font-family: var(--font-serif);
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 16px;
+      }
+
+      .mvv-body {
+        font-size: 0.88rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        line-height: 1.85;
+      }
+
+      /* AREAS */
+      .areas {
+        background: var(--canvas-pure);
+      }
+
+      .areas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 60px;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .areas-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+
+      .area-card {
+        background: var(--canvas-pure);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 38px 26px;
+        transition: var(--tr);
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+      }
+
+      .area-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--steel-pale), transparent);
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .area-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--steel-mid);
+      }
+
+      .area-card:hover::after {
+        opacity: 1;
+      }
+
+      .area-num {
+        font-family: var(--font-serif);
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--line);
+        line-height: 1;
+        margin-bottom: 22px;
+        transition: color 0.4s;
+      }
+
+      .area-card:hover .area-num {
+        color: var(--steel-pale);
+      }
+
+      .area-icon-wrap {
+        width: 46px;
+        height: 46px;
+        border-radius: 10px;
+        background: var(--steel-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        transition: var(--tr);
+      }
+
+      .area-card:hover .area-icon-wrap {
+        background: var(--steel-deep);
+      }
+
+      .area-card:hover .area-icon-wrap svg {
+        stroke: #fff;
+      }
+
+      .area-title {
+        font-family: var(--font-serif);
+        font-size: 1.18rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+
+      .area-desc {
+        font-size: 0.84rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        line-height: 1.8;
+      }
+
+      /* PROJECTS */
+      .projects {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+      }
+
+      .projects-filter {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 48px;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        padding: 8px 18px;
+        border-radius: 6px;
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        border: 1px solid var(--line);
+        transition: var(--tr);
+        background: transparent;
+      }
+
+      .filter-btn:hover {
+        color: var(--steel);
+        border-color: var(--steel-mid);
+      }
+
+      .filter-btn.active {
+        background: var(--steel-deep);
+        color: #fff;
+        border-color: var(--steel-deep);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .proj-card {
+        background: var(--canvas-pure);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: var(--tr);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .proj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .proj-thumb {
+        height: 155px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pt1 {
+        background: linear-gradient(145deg, #c8d8ec, #e8f0f8);
+      }
+
+      .pt2 {
+        background: linear-gradient(145deg, #c8dfd1, #e4f0e8);
+      }
+
+      .pt3 {
+        background: linear-gradient(145deg, #d8d0ea, #eee8f4);
+      }
+
+      .pt4 {
+        background: linear-gradient(145deg, #e8ddd0, #f2ece4);
+      }
+
+      .pt5 {
+        background: linear-gradient(145deg, #c8dce4, #e4f0f4);
+      }
+
+      .pt6 {
+        background: linear-gradient(145deg, #e4cccc, #f4e4e4);
+      }
+
+      .proj-body {
+        padding: 26px 22px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .proj-tag {
+        font-size: 0.63rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--steel-mid);
+        margin-bottom: 9px;
+        font-weight: 600;
+      }
+
+      .proj-title {
+        font-family: var(--font-serif);
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 9px;
+      }
+
+      .proj-desc {
+        font-size: 0.83rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        line-height: 1.8;
+        flex: 1;
+      }
+
+      /* HELP */
+      .help {
+        background: #1e3254;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .help::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 70% 60% at 80% 30%,
+            rgba(100, 145, 190, 0.13) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 50% at 20% 70%,
+            rgba(36, 58, 88, 0.32) 0%,
+            transparent 60%
+          );
+      }
+
+      .help .chip {
+        color: rgba(122, 173, 207, 0.8);
+      }
+
+      .help .chip::before {
+        background: rgba(122, 173, 207, 0.5);
+      }
+
+      .help-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.06);
+        margin-top: 60px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .help-card {
+        background: transparent;
+        padding: 46px 34px;
+        transition: var(--tr);
+      }
+
+      .help-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .help-card-num {
+        font-family: var(--font-serif);
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.06);
+        line-height: 1;
+        margin-bottom: 22px;
+        transition: color 0.4s;
+      }
+
+      .help-card:hover .help-card-num {
+        color: rgba(255, 255, 255, 0.1);
+      }
+
+      .help-title {
+        font-family: var(--font-serif);
+        font-size: 1.28rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.88);
+        margin-bottom: 13px;
+      }
+
+      .help-desc {
+        font-size: 0.84rem;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.85;
+        margin-bottom: 26px;
+      }
+
+      .help-link {
+        font-size: 0.73rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #7aadcf;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          gap 0.3s,
+          color 0.3s;
+      }
+
+      .help-link:hover {
+        color: rgba(255, 255, 255, 0.82);
+        gap: 14px;
+      }
+
+      /* DONATE */
+      .donate {
+        background: var(--canvas-pure);
+      }
+
+      .donate-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 18px;
+        margin-top: 60px;
+      }
+
+      .donate-main {
+        grid-row: span 2;
+        background: var(--steel-deep);
+        border-radius: var(--radius-lg);
+        padding: 50px 42px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .donate-main::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 80% 20%,
+          rgba(100, 145, 190, 0.16) 0%,
+          transparent 60%
+        );
+      }
+
+      .donate-main-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .donate-main .h-section {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .donate-main .body-lead {
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 34px;
+      }
+
+      .pix-panel {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 10px;
+        padding: 22px;
+        margin-bottom: 18px;
+      }
+
+      .pix-label {
+        font-size: 0.63rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.42);
+        margin-bottom: 9px;
+      }
+
+      .pix-key {
+        font-family: monospace;
+        font-size: 0.93rem;
+        color: rgba(255, 255, 255, 0.78);
+        word-break: break-all;
+        line-height: 1.5;
+      }
+
+      .btn-pix-copy {
+        width: 100%;
+        padding: 13px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        transition: var(--tr);
+      }
+
+      .btn-pix-copy:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      .donate-card {
+        background: var(--canvas-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 34px 30px;
+        transition: var(--tr);
+      }
+
+      .donate-card:hover {
+        border-color: var(--steel-mid);
+        background: var(--canvas-pure);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .dc-icon-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: var(--steel-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+
+      .dc-title {
+        font-family: var(--font-serif);
+        font-size: 1.12rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+
+      .dc-desc {
+        font-size: 0.83rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        line-height: 1.8;
+      }
+
+      .bank-row {
+        font-size: 0.83rem;
+        color: var(--ink-soft);
+        margin: 5px 0;
+        font-weight: 300;
+      }
+
+      .bank-row strong {
+        color: var(--steel);
+        font-weight: 600;
+      }
+
+      /* TESTIMONIALS */
+      .testimonials {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+      }
+
+      .testi-slider {
+        overflow: hidden;
+        margin-top: 60px;
+      }
+
+      .testi-track {
+        display: flex;
+        gap: 18px;
+        transition: transform 0.55s var(--ease);
+      }
+
+      .testi-card {
+        min-width: 355px;
+        background: var(--canvas-pure);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 38px 34px;
+        transition: var(--tr);
+        flex-shrink: 0;
+      }
+
+      .testi-card:hover {
+        border-color: var(--steel-light);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .testi-stars {
+        color: var(--warm);
+        font-size: 0.88rem;
+        letter-spacing: 3px;
+        margin-bottom: 18px;
+      }
+
+      .testi-quote {
+        font-family: var(--font-serif);
+        font-size: 1.03rem;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--ink-soft);
+        line-height: 1.8;
+        margin-bottom: 26px;
+      }
+
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+
+      .testi-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--steel-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .testi-name {
+        font-size: 0.86rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .testi-role {
+        font-size: 0.74rem;
+        color: var(--ink-muted);
+        margin-top: 2px;
+      }
+
+      .slider-nav {
+        display: flex;
+        gap: 8px;
+        margin-top: 32px;
+      }
+
+      .s-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 7px;
+        border: 1px solid var(--line);
+        color: var(--ink-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--tr);
+      }
+
+      .s-btn:hover {
+        background: var(--steel-deep);
+        color: #fff;
+        border-color: var(--steel-deep);
+      }
+
+      /* TEAM */
+      .team {
+        background: var(--canvas-pure);
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-top: 60px;
+      }
+
+      .team-card {
+        background: var(--canvas-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: var(--tr);
+      }
+
+      .team-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--steel-light);
+      }
+
+      .team-photo {
+        height: 125px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          145deg,
+          var(--steel-light),
+          var(--canvas-2)
+        );
+      }
+
+      .team-info {
+        padding: 22px 18px;
+      }
+
+      .team-name {
+        font-family: var(--font-serif);
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 4px;
+      }
+
+      .team-role {
+        font-size: 0.7rem;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 14px;
+      }
+
+      .team-social-row {
+        display: flex;
+        gap: 6px;
+      }
+
+      .team-soc {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: var(--steel-pale);
+        color: var(--steel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--tr);
+      }
+
+      .team-soc:hover {
+        background: var(--steel-deep);
+        color: #fff;
+      }
+
+      /* PARTNERS */
+      .partners {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .partners-scroll {
+        overflow: hidden;
+        margin-top: 44px;
+      }
+
+      .partners-track {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        animation: scrollInfinite 22s linear infinite;
+        width: max-content;
+      }
+
+      .partners-track:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes scrollInfinite {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .partner-tile {
+        height: 50px;
+        min-width: 126px;
+        border-radius: 7px;
+        background: var(--canvas-pure);
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        font-size: 0.77rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: var(--ink-faint);
+        text-transform: uppercase;
+        transition: var(--tr);
+        filter: grayscale(1) opacity(0.5);
+      }
+
+      .partner-tile:hover {
+        filter: none;
+        border-color: var(--steel-mid);
+        color: var(--steel);
+      }
+
+      /* TRANSPARENCY */
+      .transparency {
+        background: var(--canvas-pure);
+      }
+
+      .transparency-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+        margin-top: 60px;
+      }
+
+      .stat-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .s-bar {
+        background: var(--canvas-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 20px 22px;
+      }
+
+      .s-bar-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .s-bar-label {
+        font-size: 0.83rem;
+        font-weight: 500;
+        color: var(--ink-soft);
+      }
+
+      .s-bar-val {
+        font-size: 0.83rem;
+        font-weight: 600;
+        color: var(--steel);
+      }
+
+      .s-bar-track {
+        height: 4px;
+        background: var(--line);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+
+      .s-bar-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: var(--steel-mid);
+        width: 0;
+        transition: width 1.4s var(--ease-out);
+      }
+
+      .doc-list {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+      }
+
+      .doc-row {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: var(--canvas-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 17px 18px;
+        transition: var(--tr);
+        cursor: pointer;
+      }
+
+      .doc-row:hover {
+        border-color: var(--steel-mid);
+        background: var(--canvas-pure);
+      }
+
+      .doc-ic {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background: var(--steel-pale);
+        color: var(--steel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .doc-info {
+        flex: 1;
+      }
+
+      .doc-title {
+        font-size: 0.86rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 2px;
+      }
+
+      .doc-sub {
+        font-size: 0.73rem;
+        color: var(--ink-muted);
+      }
+
+      .doc-arrow {
+        color: var(--ink-faint);
+        transition: transform 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .doc-row:hover .doc-arrow {
+        transform: translateX(4px);
+        color: var(--steel);
+      }
+
+      /* FAQ */
+      .faq {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+      }
+
+      .faq-wrap {
+        max-width: 720px;
+        margin: 60px auto 0;
+      }
+
+      .faq-item {
+        border-bottom: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .faq-q {
+        width: 100%;
+        padding: 23px 0;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        font-size: 0.93rem;
+        font-weight: 500;
+        color: var(--ink-soft);
+        transition: color 0.3s;
+      }
+
+      .faq-q:hover {
+        color: var(--steel-deep);
+      }
+
+      .faq-q-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 1px solid var(--line);
+        color: var(--ink-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--tr);
+      }
+
+      .faq-item.open .faq-q {
+        color: var(--steel-deep);
+      }
+
+      .faq-item.open .faq-q-icon {
+        background: var(--steel-deep);
+        color: #fff;
+        border-color: var(--steel-deep);
+        transform: rotate(45deg);
+      }
+
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        font-size: 0.88rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        line-height: 1.85;
+        transition:
+          max-height 0.4s var(--ease),
+          padding 0.4s;
+        padding: 0;
+      }
+
+      .faq-item.open .faq-a {
+        max-height: 200px;
+        padding-bottom: 22px;
+      }
+
+      /* CONTACT */
+      .contact {
+        background: var(--canvas-pure);
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 96px;
+        align-items: start;
+        margin-top: 60px;
+      }
+
+      .contact-info-head {
+        font-family: var(--font-serif);
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 34px;
+      }
+
+      .c-item {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      .c-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        background: var(--steel-pale);
+        color: var(--steel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .c-label {
+        font-size: 0.66rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 3px;
+        font-weight: 600;
+      }
+
+      .c-value {
+        font-size: 0.88rem;
+        color: var(--ink-soft);
+        font-weight: 400;
+        line-height: 1.6;
+      }
+
+      .c-value a {
+        color: var(--steel);
+      }
+
+      .c-value a:hover {
+        text-decoration: underline;
+      }
+
+      .social-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 30px;
+      }
+
+      .soc-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        color: var(--ink-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--tr);
+      }
+
+      .soc-btn:hover {
+        background: var(--steel-deep);
+        color: #fff;
+        border-color: var(--steel-deep);
+      }
+
+      .map-placeholder {
+        margin-top: 30px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        height: 195px;
+        background: var(--canvas-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        color: var(--ink-muted);
+        font-size: 0.84rem;
+      }
+
+      .cf {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+      }
+
+      .cf-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .cf-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+      }
+
+      .cf-input,
+      .cf-textarea {
+        padding: 12px 15px;
+        border-radius: 7px;
+        border: 1px solid var(--line);
+        background: var(--canvas-2);
+        font-family: var(--font-sans);
+        font-size: 0.88rem;
+        color: var(--ink);
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+      }
+
+      .cf-input:focus,
+      .cf-textarea:focus {
+        outline: none;
+        border-color: var(--steel-mid);
+        background: var(--canvas-pure);
+        box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.08);
+      }
+
+      .cf-textarea {
+        min-height: 116px;
+        resize: vertical;
+      }
+
+      .cf-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 13px;
+      }
+
+      .btn-send {
+        align-self: flex-start;
+        padding: 12px 30px;
+        border-radius: 7px;
+        background: var(--steel-deep);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.77rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        transition: var(--tr);
+        box-shadow: 0 4px 16px rgba(26, 58, 92, 0.18);
+      }
+
+      .btn-send:hover {
+        background: var(--steel);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 26px rgba(26, 58, 92, 0.28);
+      }
+
+      .form-feedback {
+        display: none;
+        padding: 13px 17px;
+        border-radius: 8px;
+        font-size: 0.86rem;
+        font-weight: 500;
+        border: 1px solid;
+      }
+
+      .form-feedback.ok {
+        background: #eef6f2;
+        color: #1f6645;
+        border-color: #b8ddd0;
+      }
+
+      /* NEWSLETTER */
+      .newsletter-bar {
+        background: var(--canvas-2);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 68px 6%;
+      }
+
+      .nl-inner {
+        max-width: 540px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .nl-title {
+        font-family: var(--font-serif);
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 11px;
+      }
+
+      .nl-sub {
+        font-size: 0.88rem;
+        font-weight: 300;
+        color: var(--ink-muted);
+        margin-bottom: 32px;
+      }
+
+      .nl-form {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nl-input {
+        flex: 1;
+        padding: 12px 17px;
+        border-radius: 7px;
+        border: 1px solid var(--line);
+        background: var(--canvas-pure);
+        font-family: var(--font-sans);
+        font-size: 0.88rem;
+        color: var(--ink);
+      }
+
+      .nl-input:focus {
+        outline: none;
+        border-color: var(--steel-mid);
+        box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.08);
+      }
+
+      .btn-nl {
+        padding: 12px 22px;
+        border-radius: 7px;
+        background: var(--steel-deep);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.77rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transition: var(--tr);
+      }
+
+      .btn-nl:hover {
+        background: var(--steel);
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--ink);
+        color: rgba(255, 255, 255, 0.55);
+        padding: 76px 6% 34px;
+      }
+
+      .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1.8fr 1fr 1fr 1fr;
+        gap: 56px;
+        margin-bottom: 60px;
+      }
+
+      .ft-logo-row {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 18px;
+      }
+
+      .ft-logo-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ft-brand-name {
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.76);
+        letter-spacing: 0.04em;
+      }
+
+      .ft-desc {
+        font-size: 0.82rem;
+        font-weight: 300;
+        line-height: 1.9;
+        margin-bottom: 26px;
+        max-width: 275px;
+      }
+
+      .ft-socials {
+        display: flex;
+        gap: 7px;
+      }
+
+      .ft-soc {
+        width: 34px;
+        height: 34px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.46);
+        transition: var(--tr);
+      }
+
+      .ft-soc:hover {
+        background: var(--steel);
+        color: #fff;
+        border-color: var(--steel);
+      }
+
+      .ft-col-title {
+        font-size: 0.66rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.28);
+        margin-bottom: 18px;
+        font-weight: 600;
+      }
+
+      .ft-col ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .ft-col li a {
+        font-size: 0.82rem;
+        font-weight: 300;
+        transition: color 0.3s;
+      }
+
+      .ft-col li a:hover {
+        color: rgba(255, 255, 255, 0.84);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        padding-top: 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 0.74rem;
+        letter-spacing: 0.03em;
+      }
+
+      .hc {
+        --ink: #000;
+        --ink-soft: #111;
+        --line: rgba(0, 0, 0, 0.3);
+      }
+
+      .hc a:focus,
+      .hc button:focus,
+      .hc input:focus,
+      .hc textarea:focus {
+        outline: 3px solid #005fcc !important;
+        outline-offset: 2px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 1100px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+          gap: 56px;
+        }
+
+        .hero-title {
+          font-size: 3rem;
+        }
+
+        .hero-sub {
+          max-width: 100%;
+        }
+
+        .hero-metrics {
+          flex-wrap: wrap;
+        }
+
+        .hero-metric {
+          flex: 1 0 40%;
+          border-right: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 15px 0;
+        }
+
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 56px;
+        }
+
+        .about-visual-wrap {
+          position: static;
+        }
+
+        .areas-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .help-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .donate-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .donate-main {
+          grid-row: auto;
+        }
+
+        .footer-top {
+          grid-template-columns: 1fr 1fr;
+          gap: 38px;
+        }
+
+        .transparency-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        section {
+          padding: 76px 5%;
+        }
+
+        .nav-links,
+        .btn-nav-cta {
+          display: none;
+        }
+
+        .hamburger {
+          display: flex;
+        }
+
+        .mobile-nav {
+          display: flex;
+        }
+
+        .mvv-grid,
+        .areas-grid,
+        .projects-grid,
+        .help-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .team-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 44px;
+        }
+
+        .cf-row {
+          grid-template-columns: 1fr;
+        }
+
+        .ribbon-inner {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .footer-top {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .nl-form {
+          flex-direction: column;
+        }
+
+        .hero-inner {
+          text-align: center;
+        }
+
+        .hero-actions {
+          justify-content: center;
+        }
+
+        .hero-metrics {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .team-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .ribbon-inner {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .testi-card {
+          min-width: calc(100vw - 40px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+    <!-- LOADER -->
+    <div id="loader" role="status" aria-label="Carregando">
+      <div class="loader-logo">
+        <div class="loader-mark">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </div>
+        <div class="loader-wordmark">Casa Costa Matos</div>
+      </div>
+      <div class="loader-rule"></div>
+      <div class="loader-sub">Realengo · Rio de Janeiro</div>
+    </div>
+
+    <!-- WA -->
+    <a
+      class="wa-float"
+      href="https://wa.me/5521968710768"
+      aria-label="WhatsApp"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="#fff"
+        aria-hidden="true"
+      >
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
+
+    <!-- A11Y BAR -->
+    <div class="a11y-bar" role="toolbar" aria-label="Acessibilidade">
+      <button
+        class="a11y-btn"
+        id="btnDark"
+        title="Modo escuro"
+        aria-pressed="false"
+      >
+        ◐
+      </button>
+      <button
+        class="a11y-btn"
+        id="btnUp"
+        title="Aumentar fonte"
+        aria-label="Aumentar fonte"
+      >
+        A+
+      </button>
+      <button
+        class="a11y-btn"
+        id="btnDown"
+        title="Diminuir fonte"
+        aria-label="Diminuir fonte"
+      >
+        A−
+      </button>
+      <button
+        class="a11y-btn"
+        id="btnHC"
+        title="Alto contraste"
+        aria-pressed="false"
+      >
+        ◑
+      </button>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav
+      class="navbar at-top"
+      id="nav"
+      role="navigation"
+      aria-label="Principal"
+    >
+      <div class="nav-inner">
+        <a href="#" class="nav-logo" aria-label="Casa Costa Matos — início">
+          <div class="logo-mark">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="rgba(255,255,255,0.88)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </div>
+          <div>
+            <div class="logo-name">Casa Costa Matos</div>
+            <div class="logo-tagline">ONG · Realengo · RJ</div>
+          </div>
+        </a>
+        <div class="nav-links" role="menubar">
+          <a href="#sobre" class="nav-link" role="menuitem">Sobre</a>
+          <a href="#areas" class="nav-link" role="menuitem">Atuação</a>
+          <a href="#projetos" class="nav-link" role="menuitem">Projetos</a>
+          <a href="#ajude" class="nav-link" role="menuitem">Ajude</a>
+          <a href="#equipe" class="nav-link" role="menuitem">Equipe</a>
+          <a href="#contato" class="nav-link" role="menuitem">Contato</a>
+          <a href="#doe" class="btn-nav-cta" role="menuitem">Doe agora</a>
+        </div>
+        <button
+          class="hamburger"
+          id="ham"
+          aria-expanded="false"
+          aria-controls="mob-nav"
+          aria-label="Menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div
+      class="mobile-nav"
+      id="mob-nav"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu mobile"
+    >
+      <a href="#sobre" onclick="closeNav()">Sobre</a>
+      <a href="#areas" onclick="closeNav()">Áreas de Atuação</a>
+      <a href="#projetos" onclick="closeNav()">Projetos</a>
+      <a href="#ajude" onclick="closeNav()">Como Ajudar</a>
+      <a href="#equipe" onclick="closeNav()">Equipe</a>
+      <a href="#contato" onclick="closeNav()">Contato</a>
+      <a
+        href="#doe"
+        onclick="closeNav()"
+        style="
+          background: var(--steel-deep);
+          color: rgba(255, 255, 255, 0.9);
+          margin-top: 12px;
+        "
+        >Doe agora</a
+      >
+    </div>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" aria-label="Apresentação">
+        <div class="hero-inner container">
+          <div class="hero-content">
+            <div class="hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              ONG ativa em Realengo desde 2010
+            </div>
+            <h1 class="hero-title">
+              Transformando Vidas Com <em>Amor</em><br />
+              <!-- <em>Educação, Cultura,</em><br>
+                        <strong>Saúde</strong> e Assistência Social. -->
+            </h1>
+            <p class="hero-sub">
+              A Casa Costa Matos promove acolhimento, dignidade e oportunidades
+              reais para famílias em situação de vulnerabilidade no coração do
+              Rio de Janeiro.
+            </p>
+            <div class="hero-actions">
+              <a
+                href="#sobre"
+                class="btn-primary"
+                style="
+                  background: rgba(255, 255, 255, 0.11);
+                  border: 1.5px solid rgba(255, 255, 255, 0.2);
+                  box-shadow: none;
+                  color: rgba(255, 255, 255, 0.84);
+                "
+                >Conheça a ONG</a
+              >
+              <a href="#doe" class="btn-outline">Fazer doação</a>
+            </div>
+            <div
+              class="hero-metrics"
+              role="region"
+              aria-label="Números de impacto"
+            >
+              <div class="hero-metric">
+                <div class="metric-num" data-count="1200">0</div>
+                <div class="metric-label">Famílias atendidas</div>
+              </div>
+              <div class="hero-metric">
+                <div class="metric-num" data-count="500">0</div>
+                <div class="metric-label">Refeições / mês</div>
+              </div>
+              <div class="hero-metric">
+                <div class="metric-num" data-count="80">0</div>
+                <div class="metric-label">Voluntários</div>
+              </div>
+              <div class="hero-metric">
+                <div class="metric-num" data-count="15">0</div>
+                <div class="metric-label">Anos de história</div>
+              </div>
+            </div>
+          </div>
+          <div style="position: relative">
+            <div class="hero-card">
+              <div class="hero-card-inner">
+                <div class="hero-img-area">
+                  <div class="hero-img-icon">
+                    <svg
+                      width="72"
+                      height="72"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="rgba(180,210,240,0.55)"
+                      stroke-width="1.3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="hero-card-foot">
+                  <div class="hero-card-status"></div>
+                  <span class="hero-card-status-text"
+                    >Atendimentos ativos agora em Realengo</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="hero-chip hero-chip-1" aria-hidden="true">
+              <div class="chip-val">500+</div>
+              <div class="chip-lab">Refeições mensais</div>
+            </div>
+            <div class="hero-chip hero-chip-2" aria-hidden="true">
+              <div class="chip-val">15 anos</div>
+              <div class="chip-lab">Impacto social</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIBBON -->
+      <div class="ribbon" role="region" aria-label="Estatísticas de impacto">
+        <div class="ribbon-inner">
+          <div class="ribbon-stat reveal">
+            <div class="ribbon-num" data-count="1200">0</div>
+            <div class="ribbon-label">Famílias beneficiadas</div>
+          </div>
+          <div class="ribbon-stat reveal" style="transition-delay: 0.1s">
+            <div class="ribbon-num" data-count="500">0</div>
+            <div class="ribbon-label">Refeições por mês</div>
+          </div>
+          <div class="ribbon-stat reveal" style="transition-delay: 0.22s">
+            <div class="ribbon-num" data-count="80">0</div>
+            <div class="ribbon-label">Voluntários ativos</div>
+          </div>
+          <div class="ribbon-stat reveal" style="transition-delay: 0.34s">
+            <div class="ribbon-num" data-count="15">0</div>
+            <div class="ribbon-label">Anos de história</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOBRE -->
+      <section class="about" id="sobre" aria-labelledby="about-h">
+        <div class="container">
+          <div class="about-grid">
+            <div class="about-visual-wrap reveal-l">
+              <div class="about-visual-main" aria-hidden="true">
+                <svg
+                  width="110"
+                  height="110"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(44,82,130,0.28)"
+                  stroke-width="1"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                <div class="about-visual-badge">
+                  <div class="badge-val">+15 anos</div>
+                  <div class="badge-txt">Transformando Realengo</div>
+                </div>
+              </div>
+            </div>
+            <div class="about-content reveal-r">
+              <div class="chip">Nossa história</div>
+              <h2 class="h-section" id="about-h">
+                Uma jornada de <em>amor</em> e transformação comunitária
+              </h2>
+              <p class="about-body">
+                Fundada com o propósito de mudar realidades, a Casa Costa Matos
+                nasceu do sonho coletivo de uma comunidade mais justa,
+                acolhedora e digna. Em Realengo, somos mais do que uma
+                organização — somos família, rede de apoio e esperança.
+              </p>
+              <p class="about-body">
+                Ao longo de quinze anos, construímos pontes entre
+                vulnerabilidade e oportunidade, acreditando que toda pessoa
+                merece dignidade, saúde, educação e pertencimento.
+              </p>
+              <div class="timeline">
+                <div class="tl-item">
+                  <div class="tl-year">2010</div>
+                  <div class="tl-desc">
+                    Fundação da Casa Costa Matos com foco em assistência
+                    alimentar emergencial para famílias de Realengo.
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-year">2014</div>
+                  <div class="tl-desc">
+                    Expansão para programas culturais e educativos, incluindo o
+                    projeto de teatro e as primeiras oficinas.
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-year">2018</div>
+                  <div class="tl-desc">
+                    Abertura do núcleo de saúde com fisioterapeuta,
+                    nutricionista e psicóloga em atendimento regular gratuito.
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-year">2024</div>
+                  <div class="tl-desc">
+                    Mais de 1.200 famílias cadastradas, 80 voluntários engajados
+                    e reconhecimento municipal pelo impacto social.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MVV -->
+      <section class="mvv" aria-labelledby="mvv-h">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="chip" style="justify-content: center">
+              Identidade institucional
+            </div>
+            <h2 class="h-section" id="mvv-h">
+              Missão, Visão e <em>Valores</em>
+            </h2>
+          </div>
+          <div class="mvv-grid">
+            <div class="mvv-card reveal" style="transition-delay: 0.07s">
+              <div class="mvv-label">Missão</div>
+              <div class="mvv-heading">O que nos move</div>
+              <p class="mvv-body">
+                Promover o acolhimento, a dignidade e o desenvolvimento integral
+                de famílias em situação de vulnerabilidade social, através da
+                educação, saúde, cultura e assistência social.
+              </p>
+            </div>
+            <div class="mvv-card reveal" style="transition-delay: 0.18s">
+              <div class="mvv-label">Visão</div>
+              <div class="mvv-heading">Onde queremos chegar</div>
+              <p class="mvv-body">
+                Ser referência em assistência social e desenvolvimento
+                comunitário no Rio de Janeiro, construindo uma sociedade mais
+                justa, inclusiva e repleta de oportunidades para todos.
+              </p>
+            </div>
+            <div class="mvv-card reveal" style="transition-delay: 0.3s">
+              <div class="mvv-label">Valores</div>
+              <div class="mvv-heading">O que nos guia</div>
+              <p class="mvv-body">
+                Solidariedade, respeito à dignidade humana, transparência,
+                inclusão, amor ao próximo, compromisso comunitário e excelência
+                no serviço prestado a cada pessoa atendida.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÁREAS -->
+      <section class="areas" id="areas" aria-labelledby="areas-h">
+        <div class="container">
+          <div class="areas-header">
+            <div class="reveal-l">
+              <div class="chip">O que fazemos</div>
+              <h2 class="h-section" id="areas-h">
+                Nossas <em>áreas</em> de atuação
+              </h2>
+            </div>
+            <p class="body-lead reveal-r" style="max-width: 330px">
+              Atuamos em quatro frentes para transformar integralmente a vida
+              das famílias que acompanhamos.
+            </p>
+          </div>
+          <div class="areas-grid">
+            <div class="area-card reveal" style="transition-delay: 0.04s">
+              <div class="area-num">01</div>
+              <div class="area-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+              </div>
+              <h3 class="area-title">Educação</h3>
+              <p class="area-desc">
+                Oficinas, cursos e atividades pedagógicas que ampliam o
+                horizonte de crianças, jovens e adultos da comunidade.
+              </p>
+            </div>
+            <div class="area-card reveal" style="transition-delay: 0.14s">
+              <div class="area-num">02</div>
+              <div class="area-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <h3 class="area-title">Cultura</h3>
+              <p class="area-desc">
+                Teatro, artes e expressão cultural como instrumentos de
+                transformação, autoestima e pertencimento social.
+              </p>
+            </div>
+            <div class="area-card reveal" style="transition-delay: 0.24s">
+              <div class="area-num">03</div>
+              <div class="area-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </div>
+              <h3 class="area-title">Saúde</h3>
+              <p class="area-desc">
+                Atendimentos gratuitos com fisioterapeuta, nutricionista,
+                psicóloga e terapias complementares.
+              </p>
+            </div>
+            <div class="area-card reveal" style="transition-delay: 0.34s">
+              <div class="area-num">04</div>
+              <div class="area-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <h3 class="area-title">Assistência Social</h3>
+              <p class="area-desc">
+                Cozinha comunitária, cestas básicas, doação de alimentos e
+                acompanhamento por assistente social.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJETOS -->
+      <section class="projects" id="projetos" aria-labelledby="proj-h">
+        <div class="container">
+          <div class="reveal">
+            <div class="chip">Iniciativas</div>
+            <h2 class="h-section" id="proj-h">Projetos e <em>ações</em></h2>
+          </div>
+          <div
+            class="projects-filter reveal"
+            role="tablist"
+            aria-label="Filtrar projetos"
+          >
+            <button
+              class="filter-btn active"
+              onclick="filterProj('all', this)"
+              role="tab"
+              aria-selected="true"
+            >
+              Todos
+            </button>
+            <button
+              class="filter-btn"
+              onclick="filterProj('social', this)"
+              role="tab"
+              aria-selected="false"
+            >
+              Ação Social
+            </button>
+            <button
+              class="filter-btn"
+              onclick="filterProj('cultura', this)"
+              role="tab"
+              aria-selected="false"
+            >
+              Cultura
+            </button>
+            <button
+              class="filter-btn"
+              onclick="filterProj('saude', this)"
+              role="tab"
+              aria-selected="false"
+            >
+              Saúde
+            </button>
+          </div>
+          <div class="projects-grid">
+            <article class="proj-card reveal" data-cat="social">
+              <div class="proj-thumb pt1">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(44,82,130,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                  <line x1="6" y1="1" x2="6" y2="4" />
+                  <line x1="10" y1="1" x2="10" y2="4" />
+                  <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Ação Social</div>
+                <h3 class="proj-title">Cozinha Comunitária Carioca</h3>
+                <p class="proj-desc">
+                  Refeições quentes e nutritivas oferecidas gratuitamente para
+                  famílias cadastradas. Um prato de comida que representa
+                  dignidade.
+                </p>
+              </div>
+            </article>
+            <article
+              class="proj-card reveal"
+              data-cat="social"
+              style="transition-delay: 0.09s"
+            >
+              <div class="proj-thumb pt2">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(61,107,82,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Ação Social</div>
+                <h3 class="proj-title">Projeto Prato Feito & Cestas</h3>
+                <p class="proj-desc">
+                  Doação de alimentos e cestas básicas para famílias em
+                  insegurança alimentar, garantindo o essencial com
+                  regularidade.
+                </p>
+              </div>
+            </article>
+            <article
+              class="proj-card reveal"
+              data-cat="cultura"
+              style="transition-delay: 0.18s"
+            >
+              <div class="proj-thumb pt3">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(88,60,130,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Cultura</div>
+                <h3 class="proj-title">Teatro & Expressão Cultural</h3>
+                <p class="proj-desc">
+                  Aulas de teatro e atividades culturais que desenvolvem
+                  confiança, criatividade e senso de pertencimento.
+                </p>
+              </div>
+            </article>
+            <article class="proj-card reveal" data-cat="cultura">
+              <div class="proj-thumb pt4">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(122,98,69,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                  <line x1="9" y1="9" x2="9.01" y2="9" />
+                  <line x1="15" y1="9" x2="15.01" y2="9" />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Cultura</div>
+                <h3 class="proj-title">Oficinas Educativas</h3>
+                <p class="proj-desc">
+                  Oficinas de artesanato, música e artes visuais que ampliam
+                  possibilidades e podem gerar renda complementar.
+                </p>
+              </div>
+            </article>
+            <article
+              class="proj-card reveal"
+              data-cat="saude"
+              style="transition-delay: 0.09s"
+            >
+              <div class="proj-thumb pt5">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(44,92,130,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Saúde</div>
+                <h3 class="proj-title">Núcleo de Saúde Integral</h3>
+                <p class="proj-desc">
+                  Atendimentos gratuitos com assistente social, nutricionista,
+                  fisioterapeuta, psicóloga e terapias complementares.
+                </p>
+              </div>
+            </article>
+            <article
+              class="proj-card reveal"
+              data-cat="social"
+              style="transition-delay: 0.18s"
+            >
+              <div class="proj-thumb pt6">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(130,44,60,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="proj-body">
+                <div class="proj-tag">Ação Social</div>
+                <h3 class="proj-title">Doação de Roupas & Agasalhos</h3>
+                <p class="proj-desc">
+                  Campanha permanente de arrecadação e distribuição de roupas,
+                  calçados e agasalhos para famílias necessitadas.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMO AJUDAR -->
+      <section class="help" id="ajude" aria-labelledby="help-h">
+        <div class="container" style="position: relative; z-index: 1">
+          <div class="reveal">
+            <div class="chip">Participe</div>
+            <h2
+              class="h-section"
+              id="help-h"
+              style="color: rgba(255, 255, 255, 0.85)"
+            >
+              Como você pode
+              <em style="color: rgba(180, 210, 235, 0.72)"
+                >fazer a diferença</em
+              >
+            </h2>
+          </div>
+          <div class="help-grid">
+            <div class="help-card reveal" style="transition-delay: 0.04s">
+              <div class="help-card-num">01</div>
+              <h3 class="help-title">Seja Voluntário</h3>
+              <p class="help-desc">
+                Doe seu tempo e talento. Precisamos de pessoas comprometidas em
+                diversas áreas de atuação.
+              </p>
+              <a href="#contato" class="help-link"
+                >Quero ser voluntário
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" /></svg></a>
+            </div>
+            <div class="help-card reveal" style="transition-delay: 0.14s">
+              <div class="help-card-num">02</div>
+              <h3 class="help-title">Faça uma Doação</h3>
+              <p class="help-desc">
+                Sua contribuição sustenta refeições, cursos, atendimentos e
+                sonhos de centenas de famílias.
+              </p>
+              <a href="#doe" class="help-link"
+                >Quero doar
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" /></svg></a>
+            </div>
+            <div class="help-card reveal" style="transition-delay: 0.24s">
+              <div class="help-card-num">03</div>
+              <h3 class="help-title">Compartilhe</h3>
+              <p class="help-desc">
+                Siga, compartilhe e fale sobre nossa causa. Visibilidade salva
+                vidas e amplia o alcance do trabalho.
+              </p>
+              <a
+                href="https://instagram.com/casacostamatos"
+                target="_blank"
+                rel="noopener"
+                class="help-link"
+                >Seguir no Instagram
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" /></svg></a>
+            </div>
+            <div class="help-card reveal" style="transition-delay: 0.34s">
+              <div class="help-card-num">04</div>
+              <h3 class="help-title">Seja Parceiro</h3>
+              <p class="help-desc">
+                Empresas e organizações podem contribuir com projetos, recursos
+                e capacitações estruturadas.
+              </p>
+              <a href="#contato" class="help-link"
+                >Fale conosco
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" /></svg></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOE -->
+      <section class="donate" id="doe" aria-labelledby="doe-h">
+        <div class="container">
+          <div class="reveal">
+            <div class="chip">Contribua</div>
+            <h2 class="h-section" id="doe-h">Escolha como <em>apoiar</em></h2>
+          </div>
+          <div class="donate-grid">
+            <div class="donate-main reveal-l">
+              <div class="donate-main-inner">
+                <div class="chip" style="color: rgba(180, 210, 235, 0.62)">
+                  PIX — forma mais rápida
+                </div>
+                <h3
+                  class="h-section"
+                  style="
+                    font-size: 1.9rem;
+                    color: rgba(255, 255, 255, 0.88);
+                    margin-bottom: 12px;
+                  "
+                >
+                  Doe via PIX
+                </h3>
+                <p
+                  class="body-lead"
+                  style="margin-bottom: 34px; color: rgba(255, 255, 255, 0.52)"
+                >
+                  Seguro, instantâneo e gratuito. Sua doação chega em segundos.
+                </p>
+                <div class="pix-panel">
+                  <div class="pix-label">Chave PIX — CNPJ</div>
+                  <div class="pix-key" id="pixkey">00.000.000/0001-00</div>
+                </div>
+                <button
+                  class="btn-pix-copy"
+                  onclick="copyPix()"
+                  aria-label="Copiar chave PIX"
+                >
+                  <span id="pix-btn-txt">Copiar chave PIX</span>
+                </button>
+              </div>
+            </div>
+            <div class="donate-card reveal" style="transition-delay: 0.09s">
+              <div class="dc-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="3" y1="15" x2="21" y2="15" />
+                  <line x1="9" y1="3" x2="9" y2="21" />
+                  <line x1="15" y1="3" x2="15" y2="21" />
+                </svg>
+              </div>
+              <div class="dc-title">Transferência Bancária</div>
+              <div style="margin-top: 13px">
+                <p class="bank-row"><strong>Banco:</strong> Banco do Brasil</p>
+                <p class="bank-row"><strong>Agência:</strong> 0000-0</p>
+                <p class="bank-row"><strong>Conta:</strong> 00000-0</p>
+                <p class="bank-row">
+                  <strong>Titular:</strong> Casa Costa Matos
+                </p>
+                <p class="bank-row">
+                  <strong>CNPJ:</strong> 00.000.000/0001-00
+                </p>
+              </div>
+            </div>
+            <div class="donate-card reveal" style="transition-delay: 0.18s">
+              <div class="dc-icon-wrap">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="dc-title">Doação de Alimentos</div>
+              <p class="dc-desc">
+                Alimentos não-perecíveis, óleo, leite, arroz, feijão e itens da
+                cesta básica. Traga à nossa sede.
+              </p>
+              <div
+                style="
+                  background: var(--steel-pale);
+                  border-radius: 8px;
+                  padding: 13px;
+                  margin-top: 15px;
+                  font-size: 0.83rem;
+                  color: var(--steel-deep);
+                  line-height: 1.7;
+                "
+              >
+                Rua Capitão Teixeira, 583 — Realengo<br />Seg–Sex · 9h às 17h
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEPOIMENTOS -->
+      <section class="testimonials" aria-labelledby="testi-h">
+        <div class="container">
+          <div class="reveal">
+            <div class="chip">Histórias reais</div>
+            <h2 class="h-section" id="testi-h">
+              O que dizem quem <em>viveu</em>
+            </h2>
+          </div>
+          <div
+            class="testi-slider"
+            role="region"
+            aria-label="Depoimentos"
+            aria-live="polite"
+          >
+            <div class="testi-track" id="testi-track">
+              <div class="testi-card">
+                <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+                <p class="testi-quote">
+                  "A Casa Costa Matos mudou a minha vida. Quando não tinha o que
+                  comer, eles estavam lá. Hoje meu filho frequenta as oficinas
+                  de teatro e está irreconhecível de tão confiante."
+                </p>
+                <div class="testi-author">
+                  <div class="testi-avatar">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--steel-mid)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="testi-name">Maria das Graças</div>
+                    <div class="testi-role">Beneficiária, Realengo</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testi-card">
+                <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+                <p class="testi-quote">
+                  "Ser voluntário aqui é a melhor coisa que já fiz. O impacto no
+                  rosto das famílias me motiva a continuar. A equipe é incrível
+                  e o trabalho é de uma seriedade rara."
+                </p>
+                <div class="testi-author">
+                  <div class="testi-avatar">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--steel-mid)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="testi-name">Carlos Eduardo</div>
+                    <div class="testi-role">Voluntário há 3 anos</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testi-card">
+                <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+                <p class="testi-quote">
+                  "Nossa empresa passou a ser parceira e foi uma das melhores
+                  decisões. Ver de perto o trabalho da Casa Costa Matos é
+                  emocionante. Transparência e dedicação totais."
+                </p>
+                <div class="testi-author">
+                  <div class="testi-avatar">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--steel-mid)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="testi-name">Ana Beatriz Lima</div>
+                    <div class="testi-role">Empresa parceira</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testi-card">
+                <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+                <p class="testi-quote">
+                  "As sessões de fisioterapia gratuitas foram essenciais para
+                  minha recuperação. Não tinha condições de pagar e a Casa Costa
+                  Matos me devolveu minha mobilidade e minha dignidade."
+                </p>
+                <div class="testi-author">
+                  <div class="testi-avatar">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--steel-mid)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="testi-name">João Ribeiro</div>
+                    <div class="testi-role">Atendido pelo núcleo de saúde</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="slider-nav"
+            role="group"
+            aria-label="Controles do carrossel"
+          >
+            <button class="s-btn" id="sPrev" aria-label="Depoimento anterior">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button class="s-btn" id="sNext" aria-label="Próximo depoimento">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- EQUIPE -->
+      <section class="team" id="equipe" aria-labelledby="team-h">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="chip" style="justify-content: center">Pessoas</div>
+            <h2 class="h-section" id="team-h">Conheça nossa <em>equipe</em></h2>
+          </div>
+          <div class="team-grid">
+            <div class="team-card reveal">
+              <div class="team-photo">
+                <svg
+                  width="52"
+                  height="52"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel-mid)"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="team-info">
+                <div class="team-name">Dra. Rita Matos</div>
+                <div class="team-role">Diretora Presidente</div>
+                <div class="team-social-row">
+                  <a href="#" class="team-soc" aria-label="Instagram"
+                    ><svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                  <a href="#" class="team-soc" aria-label="LinkedIn"
+                    ><svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                      />
+                      <rect x="2" y="9" width="4" height="12" />
+                      <circle cx="4" cy="4" r="2" /></svg></a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card reveal" style="transition-delay: 0.09s">
+              <div class="team-photo">
+                <svg
+                  width="52"
+                  height="52"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel-mid)"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="team-info">
+                <div class="team-name">Dr. Paulo Costa</div>
+                <div class="team-role">Coordenador de Saúde</div>
+                <div class="team-social-row">
+                  <a href="#" class="team-soc" aria-label="Instagram"
+                    ><svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card reveal" style="transition-delay: 0.18s">
+              <div class="team-photo">
+                <svg
+                  width="52"
+                  height="52"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel-mid)"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="team-info">
+                <div class="team-name">Ana Ferreira</div>
+                <div class="team-role">Coord. Educação & Cultura</div>
+                <div class="team-social-row">
+                  <a href="#" class="team-soc" aria-label="Instagram"
+                    ><svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card reveal" style="transition-delay: 0.27s">
+              <div class="team-photo">
+                <svg
+                  width="52"
+                  height="52"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--steel-mid)"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="team-info">
+                <div class="team-name">Marcos Oliveira</div>
+                <div class="team-role">Assistente Social</div>
+                <div class="team-social-row">
+                  <a href="#" class="team-soc" aria-label="Instagram"
+                    ><svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARCEIROS -->
+      <section class="partners" aria-labelledby="part-h">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="chip" style="justify-content: center">Parceiros</div>
+            <h2 class="h-section" id="part-h">Quem nos <em>apoia</em></h2>
+          </div>
+        </div>
+        <div class="partners-scroll" aria-label="Parceiros e apoiadores">
+          <div class="partners-track">
+            <div class="partner-tile">Prefeitura RJ</div>
+            <div class="partner-tile">Governo Federal</div>
+            <div class="partner-tile">Banco do Brasil</div>
+            <div class="partner-tile">SESC</div>
+            <div class="partner-tile">Instituto Parceiro</div>
+            <div class="partner-tile">Fundação Apoio</div>
+            <div class="partner-tile">Empresa Solidária</div>
+            <div class="partner-tile">ONG Rede</div>
+            <div class="partner-tile" aria-hidden="true">Prefeitura RJ</div>
+            <div class="partner-tile" aria-hidden="true">Governo Federal</div>
+            <div class="partner-tile" aria-hidden="true">Banco do Brasil</div>
+            <div class="partner-tile" aria-hidden="true">SESC</div>
+            <div class="partner-tile" aria-hidden="true">
+              Instituto Parceiro
+            </div>
+            <div class="partner-tile" aria-hidden="true">Fundação Apoio</div>
+            <div class="partner-tile" aria-hidden="true">Empresa Solidária</div>
+            <div class="partner-tile" aria-hidden="true">ONG Rede</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRANSPARÊNCIA -->
+      <section class="transparency" aria-labelledby="trans-h">
+        <div class="container">
+          <div class="reveal">
+            <div class="chip">Prestação de contas</div>
+            <h2 class="h-section" id="trans-h">
+              Transparência e <em>responsabilidade</em>
+            </h2>
+          </div>
+          <div class="transparency-grid">
+            <div class="stat-bars reveal-l">
+              <p class="body-lead" style="margin-bottom: 30px">
+                Distribuição dos recursos recebidos em 2024. Nossa gestão é
+                auditada anualmente.
+              </p>
+              <div class="s-bar">
+                <div class="s-bar-top">
+                  <span class="s-bar-label"
+                    >Alimentação & Cozinha Comunitária</span
+                  ><span class="s-bar-val">40%</span>
+                </div>
+                <div class="s-bar-track">
+                  <div class="s-bar-fill" data-w="40"></div>
+                </div>
+              </div>
+              <div class="s-bar">
+                <div class="s-bar-top">
+                  <span class="s-bar-label">Educação & Cultura</span
+                  ><span class="s-bar-val">25%</span>
+                </div>
+                <div class="s-bar-track">
+                  <div class="s-bar-fill" data-w="25"></div>
+                </div>
+              </div>
+              <div class="s-bar">
+                <div class="s-bar-top">
+                  <span class="s-bar-label">Saúde & Assistência Social</span
+                  ><span class="s-bar-val">25%</span>
+                </div>
+                <div class="s-bar-track">
+                  <div class="s-bar-fill" data-w="25"></div>
+                </div>
+              </div>
+              <div class="s-bar">
+                <div class="s-bar-top">
+                  <span class="s-bar-label">Administração</span
+                  ><span class="s-bar-val">10%</span>
+                </div>
+                <div class="s-bar-track">
+                  <div class="s-bar-fill" data-w="10"></div>
+                </div>
+              </div>
+            </div>
+            <div class="doc-list reveal-r">
+              <div
+                class="doc-row"
+                tabindex="0"
+                role="button"
+                aria-label="Baixar Relatório Anual 2024"
+              >
+                <div class="doc-ic">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                </div>
+                <div class="doc-info">
+                  <div class="doc-title">Relatório Anual 2024</div>
+                  <div class="doc-sub">Prestação de contas · PDF · 2.4 MB</div>
+                </div>
+                <div class="doc-arrow">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="doc-row"
+                tabindex="0"
+                role="button"
+                aria-label="Baixar Balanço Financeiro"
+              >
+                <div class="doc-ic">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="18" y1="20" x2="18" y2="10" />
+                    <line x1="12" y1="20" x2="12" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                  </svg>
+                </div>
+                <div class="doc-info">
+                  <div class="doc-title">Balanço Financeiro</div>
+                  <div class="doc-sub">Demonstrativo · PDF · 1.1 MB</div>
+                </div>
+                <div class="doc-arrow">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="doc-row"
+                tabindex="0"
+                role="button"
+                aria-label="Baixar Estatuto Social"
+              >
+                <div class="doc-ic">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                </div>
+                <div class="doc-info">
+                  <div class="doc-title">Estatuto Social</div>
+                  <div class="doc-sub">Documentação · PDF · 800 KB</div>
+                </div>
+                <div class="doc-arrow">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="doc-row"
+                tabindex="0"
+                role="button"
+                aria-label="Ver Certificações"
+              >
+                <div class="doc-ic">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="8" r="6" />
+                    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                  </svg>
+                </div>
+                <div class="doc-info">
+                  <div class="doc-title">Certificações</div>
+                  <div class="doc-sub">Credenciamentos · PDF · 500 KB</div>
+                </div>
+                <div class="doc-arrow">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq" aria-labelledby="faq-h">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="chip" style="justify-content: center">
+              Dúvidas frequentes
+            </div>
+            <h2 class="h-section" id="faq-h">Perguntas <em>frequentes</em></h2>
+          </div>
+          <div class="faq-wrap" role="list">
+            <div class="faq-item" role="listitem">
+              <button
+                class="faq-q"
+                aria-expanded="false"
+                onclick="toggleFaq(this)"
+              >
+                Como posso me tornar voluntário na Casa Costa Matos?<span
+                  class="faq-q-icon"
+                  aria-hidden="true"
+                  >+</span
+                >
+              </button>
+              <div class="faq-a">
+                Entre em contato pelo WhatsApp (21) 96871-0768 ou pelo
+                formulário abaixo. Nossa equipe irá orientar sobre vagas
+                disponíveis, horários e a forma de contribuição mais alinhada ao
+                seu perfil e disponibilidade.
+              </div>
+            </div>
+            <div class="faq-item" role="listitem">
+              <button
+                class="faq-q"
+                aria-expanded="false"
+                onclick="toggleFaq(this)"
+              >
+                Como funciona o cadastro para receber benefícios?<span
+                  class="faq-q-icon"
+                  aria-hidden="true"
+                  >+</span
+                >
+              </button>
+              <div class="faq-a">
+                O cadastro é realizado presencialmente na sede da ONG — Rua
+                Capitão Teixeira, 583, Realengo. São necessários documentos de
+                identificação e comprovante de residência. Nossa assistente
+                social conduzirá o atendimento de forma humanizada.
+              </div>
+            </div>
+            <div class="faq-item" role="listitem">
+              <button
+                class="faq-q"
+                aria-expanded="false"
+                onclick="toggleFaq(this)"
+              >
+                Qual o horário de funcionamento?<span
+                  class="faq-q-icon"
+                  aria-hidden="true"
+                  >+</span
+                >
+              </button>
+              <div class="faq-a">
+                Funcionamos de segunda a sexta-feira, das 9h às 17h. Em ações
+                especiais e campanhas, também atuamos aos sábados. Siga nossas
+                redes sociais para acompanhar eventos e horários
+                extraordinários.
+              </div>
+            </div>
+            <div class="faq-item" role="listitem">
+              <button
+                class="faq-q"
+                aria-expanded="false"
+                onclick="toggleFaq(this)"
+              >
+                As doações são utilizadas diretamente nos projetos?<span
+                  class="faq-q-icon"
+                  aria-hidden="true"
+                  >+</span
+                >
+              </button>
+              <div class="faq-a">
+                Sim. A Casa Costa Matos opera com total transparência. Nossos
+                relatórios financeiros são publicados anualmente e disponíveis
+                para download. 90% dos recursos vão diretamente para os projetos
+                sociais; apenas 10% cobrem custos administrativos.
+              </div>
+            </div>
+            <div class="faq-item" role="listitem">
+              <button
+                class="faq-q"
+                aria-expanded="false"
+                onclick="toggleFaq(this)"
+              >
+                Como empresas podem se tornar parceiras?<span
+                  class="faq-q-icon"
+                  aria-hidden="true"
+                  >+</span
+                >
+              </button>
+              <div class="faq-a">
+                Aceitamos parcerias através de patrocínio, voluntariado
+                corporativo e ações de responsabilidade social. Entre em contato
+                pelo formulário abaixo e nossa equipe irá propor possibilidades
+                alinhadas aos objetivos da sua empresa.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTATO -->
+      <section class="contact" id="contato" aria-labelledby="contact-h">
+        <div class="container">
+          <div class="reveal">
+            <div class="chip">Fale conosco</div>
+            <h2 class="h-section" id="contact-h">Entre em <em>contato</em></h2>
+          </div>
+          <div class="contact-grid">
+            <div class="reveal-l">
+              <h3 class="contact-info-head">Estamos aqui para você</h3>
+              <div class="c-item">
+                <div class="c-icon">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="c-label">Endereço</div>
+                  <div class="c-value">
+                    Rua Capitão Teixeira, 583 — Realengo, Rio de Janeiro — RJ
+                  </div>
+                </div>
+              </div>
+              <div class="c-item">
+                <div class="c-icon">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <div class="c-label">Telefones</div>
+                  <div class="c-value">
+                    <a href="tel:+5521968710768">(21) 96871-0768</a><br /><a
+                      href="tel:+5521965866306"
+                      >(21) 96586-6306</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="c-item">
+                <div class="c-icon">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="c-label">Instagram</div>
+                  <div class="c-value">
+                    <a
+                      href="https://instagram.com/casacostamatos"
+                      target="_blank"
+                      rel="noopener"
+                      >@casacostamatos</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="c-item">
+                <div class="c-icon">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="c-label">Horário</div>
+                  <div class="c-value">Segunda a sexta, das 9h às 17h</div>
+                </div>
+              </div>
+              <nav class="social-row" aria-label="Redes sociais">
+                <a
+                  href="https://instagram.com/casacostamatos"
+                  target="_blank"
+                  rel="noopener"
+                  class="soc-btn"
+                  aria-label="Instagram"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                <a
+                  href="https://wa.me/5521968710768"
+                  target="_blank"
+                  rel="noopener"
+                  class="soc-btn"
+                  aria-label="WhatsApp"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+                <a href="#" class="soc-btn" aria-label="Facebook"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                <a href="#" class="soc-btn" aria-label="YouTube"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"
+                    />
+                    <polygon
+                      points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+              </nav>
+              <div
+                class="map-placeholder"
+                role="complementary"
+                aria-label="Mapa de localização"
+              >
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--ink-faint)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span>Rua Capitão Teixeira, 583 — Realengo</span>
+                <a
+                  href="https://maps.google.com/?q=Rua+Capitão+Teixeira+583+Realengo+Rio+de+Janeiro"
+                  target="_blank"
+                  rel="noopener"
+                  style="
+                    color: var(--steel);
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                  "
+                  >Abrir no Google Maps →</a
+                >
+              </div>
+            </div>
+            <div class="reveal-r">
+              <form
+                class="cf"
+                id="cf"
+                onsubmit="sendForm(event)"
+                novalidate
+                aria-label="Formulário de contato"
+              >
+                <div class="cf-row">
+                  <div class="cf-group">
+                    <label class="cf-label" for="fn">Nome *</label
+                    ><input
+                      class="cf-input"
+                      type="text"
+                      id="fn"
+                      name="name"
+                      placeholder="Seu nome"
+                      required
+                      autocomplete="name"
+                    />
+                  </div>
+                  <div class="cf-group">
+                    <label class="cf-label" for="fe">E-mail *</label
+                    ><input
+                      class="cf-input"
+                      type="email"
+                      id="fe"
+                      name="email"
+                      placeholder="seu@email.com"
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+                </div>
+                <div class="cf-group">
+                  <label class="cf-label" for="fp">WhatsApp</label
+                  ><input
+                    class="cf-input"
+                    type="tel"
+                    id="fp"
+                    name="phone"
+                    placeholder="(21) 9xxxx-xxxx"
+                    autocomplete="tel"
+                  />
+                </div>
+                <div class="cf-group">
+                  <label class="cf-label" for="fs">Assunto</label
+                  ><input
+                    class="cf-input"
+                    type="text"
+                    id="fs"
+                    name="subject"
+                    placeholder="Ex: Quero ser voluntário"
+                  />
+                </div>
+                <div class="cf-group">
+                  <label class="cf-label" for="fm">Mensagem *</label
+                  ><textarea
+                    class="cf-textarea"
+                    id="fm"
+                    name="message"
+                    placeholder="Escreva sua mensagem..."
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn-send" id="send-btn">
+                  Enviar mensagem
+                </button>
+                <div
+                  class="form-feedback"
+                  id="ff"
+                  role="status"
+                  aria-live="polite"
+                ></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter-bar" role="complementary" aria-labelledby="nl-h">
+      <div class="nl-inner">
+        <h2 class="nl-title" id="nl-h">Fique por dentro</h2>
+        <p class="nl-sub">
+          Receba novidades, campanhas e histórias que inspiram, direto no seu
+          e-mail.
+        </p>
+        <form
+          class="nl-form"
+          onsubmit="nlSub(event)"
+          aria-label="Inscrição na newsletter"
+        >
+          <label for="nle" style="position: absolute; left: -9999px"
+            >E-mail</label
+          >
+          <input
+            class="nl-input"
+            type="email"
+            id="nle"
+            placeholder="Seu e-mail"
+            required
+          />
+          <button type="submit" class="btn-nl">Inscrever</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="ft-brand">
+            <div class="ft-logo-row">
+              <div class="ft-logo-mark">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.7)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </div>
+              <span class="ft-brand-name">Casa Costa Matos</span>
+            </div>
+            <p class="ft-desc">
+              Transformando vidas através da Educação, Cultura, Saúde e
+              Assistência Social em Realengo, Rio de Janeiro.
+            </p>
+            <nav class="ft-socials" aria-label="Redes sociais">
+              <a
+                href="https://instagram.com/casacostamatos"
+                target="_blank"
+                rel="noopener"
+                class="ft-soc"
+                aria-label="Instagram"
+                ><svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+              <a
+                href="https://wa.me/5521968710768"
+                target="_blank"
+                rel="noopener"
+                class="ft-soc"
+                aria-label="WhatsApp"
+                ><svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+              <a href="#" class="ft-soc" aria-label="Facebook"
+                ><svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+              <a href="#" class="ft-soc" aria-label="YouTube"
+                ><svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"
+                  />
+                  <polygon
+                    points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+            </nav>
+          </div>
+          <div class="ft-col">
+            <div class="ft-col-title">Institucional</div>
+            <ul>
+              <li><a href="#sobre">Sobre nós</a></li>
+              <li><a href="#areas">Áreas de Atuação</a></li>
+              <li><a href="#projetos">Projetos</a></li>
+              <li><a href="#equipe">Equipe</a></li>
+            </ul>
+          </div>
+          <div class="ft-col">
+            <div class="ft-col-title">Participe</div>
+            <ul>
+              <li><a href="#ajude">Ser Voluntário</a></li>
+              <li><a href="#doe">Fazer Doação</a></li>
+              <li><a href="#ajude">Ser Parceiro</a></li>
+              <li><a href="#contato">Contato</a></li>
+            </ul>
+          </div>
+          <div class="ft-col">
+            <div class="ft-col-title">Transparência</div>
+            <ul>
+              <li><a href="#">Relatório 2024</a></li>
+              <li><a href="#">Estatuto Social</a></li>
+              <li><a href="#">Certificações</a></li>
+              <li><a href="#">CNPJ Ativo</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2025 Casa Costa Matos — Todos os direitos reservados</span>
+          <span>CNPJ 00.000.000/0001-00 · Realengo, Rio de Janeiro</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.addEventListener("load", () => {
+        setTimeout(
+          () => document.getElementById("loader").classList.add("out"),
+          1800,
+        );
+      });
+      const nav = document.getElementById("nav");
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (window.scrollY > 50) {
+            nav.classList.add("scrolled");
+            nav.classList.remove("at-top");
+          } else {
+            nav.classList.remove("scrolled");
+            nav.classList.add("at-top");
+          }
+        },
+        { passive: true },
+      );
+      const ham = document.getElementById("ham"),
+        mobNav = document.getElementById("mob-nav");
+      let navOpen = false;
+      ham.addEventListener("click", () => {
+        navOpen = !navOpen;
+        ham.classList.toggle("open", navOpen);
+        mobNav.classList.toggle("open", navOpen);
+        mobNav.style.display = navOpen ? "flex" : "none";
+        ham.setAttribute("aria-expanded", navOpen);
+        document.body.style.overflow = navOpen ? "hidden" : "";
+      });
+      function closeNav() {
+        navOpen = false;
+        ham.classList.remove("open");
+        mobNav.classList.remove("open");
+        mobNav.style.display = "none";
+        ham.setAttribute("aria-expanded", false);
+        document.body.style.overflow = "";
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add("visible");
+            e.target.querySelectorAll("[data-count]").forEach(animCount);
+            e.target.querySelectorAll(".s-bar-fill").forEach((b) => {
+              b.style.width = b.dataset.w + "%";
+            });
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      );
+      document
+        .querySelectorAll(".reveal,.reveal-l,.reveal-r")
+        .forEach((el) => io.observe(el));
+      const barIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting)
+              e.target.style.width = e.target.dataset.w + "%";
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document
+        .querySelectorAll(".s-bar-fill")
+        .forEach((el) => barIO.observe(el));
+      const animated = new WeakSet();
+      function animCount(el) {
+        if (animated.has(el)) return;
+        animated.add(el);
+        const target = +el.dataset.count,
+          dur = 1600,
+          t0 = performance.now();
+        const run = (t) => {
+          const p = Math.min((t - t0) / dur, 1),
+            ease = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.floor(ease * target).toLocaleString("pt-BR");
+          if (p < 1) requestAnimationFrame(run);
+          else el.textContent = target.toLocaleString("pt-BR");
+        };
+        requestAnimationFrame(run);
+      }
+      setTimeout(() => {
+        document
+          .querySelectorAll(".hero-content .metric-num[data-count]")
+          .forEach(animCount);
+      }, 2000);
+      const ribbIO = new IntersectionObserver(
+        (ens) => {
+          ens.forEach((e) => {
+            if (e.isIntersecting)
+              e.target.querySelectorAll("[data-count]").forEach(animCount);
+          });
+        },
+        { threshold: 0.3 },
+      );
+      const ribbon = document.querySelector(".ribbon");
+      if (ribbon) ribbIO.observe(ribbon);
+      const track = document.getElementById("testi-track");
+      let si = 0;
+      function cw() {
+        const c = track.querySelector(".testi-card");
+        return c ? c.offsetWidth + 18 : 373;
+      }
+      function goSlide(n) {
+        const max = track.children.length - 1;
+        si = Math.max(0, Math.min(n, max));
+        track.style.transform = `translateX(-${si * cw()}px)`;
+      }
+      document
+        .getElementById("sNext")
+        .addEventListener("click", () => goSlide(si + 1));
+      document
+        .getElementById("sPrev")
+        .addEventListener("click", () => goSlide(si - 1));
+      setInterval(
+        () => goSlide(si >= track.children.length - 1 ? 0 : si + 1),
+        5500,
+      );
+      function filterProj(cat, btn) {
+        document.querySelectorAll(".proj-card").forEach((c) => {
+          c.style.display =
+            cat === "all" || c.dataset.cat === cat ? "" : "none";
+        });
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      }
+      function toggleFaq(btn) {
+        const item = btn.parentElement,
+          isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach((i) => {
+          i.classList.remove("open");
+          i.querySelector(".faq-q").setAttribute("aria-expanded", "false");
+        });
+        if (!isOpen) {
+          item.classList.add("open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      }
+      function copyPix() {
+        const key = document.getElementById("pixkey").textContent,
+          lbl = document.getElementById("pix-btn-txt");
+        navigator.clipboard.writeText(key).catch(() => {
+          const t = document.createElement("textarea");
+          t.value = key;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          document.body.removeChild(t);
+        });
+        lbl.textContent = "Chave copiada ✓";
+        setTimeout(() => (lbl.textContent = "Copiar chave PIX"), 3000);
+      }
+      function sendForm(e) {
+        e.preventDefault();
+        const btn = document.getElementById("send-btn"),
+          ff = document.getElementById("ff");
+        btn.textContent = "Enviando...";
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = "Enviar mensagem";
+          btn.disabled = false;
+          ff.className = "form-feedback ok";
+          ff.style.display = "block";
+          ff.textContent =
+            "Mensagem enviada com sucesso! Entraremos em contato em breve.";
+          document.getElementById("cf").reset();
+          setTimeout(() => (ff.style.display = "none"), 5000);
+        }, 1600);
+      }
+      function nlSub(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector("button");
+        btn.textContent = "Inscrito ✓";
+        e.target.querySelector("input").value = "";
+        setTimeout(() => (btn.textContent = "Inscrever"), 4000);
+      }
+      let fs = 16,
+        dark = false,
+        hc = false;
+      document.getElementById("btnUp").addEventListener("click", () => {
+        fs = Math.min(fs + 1, 22);
+        document.documentElement.style.fontSize = fs + "px";
+      });
+      document.getElementById("btnDown").addEventListener("click", () => {
+        fs = Math.max(fs - 1, 13);
+        document.documentElement.style.fontSize = fs + "px";
+      });
+      document.getElementById("btnDark").addEventListener("click", function () {
+        dark = !dark;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "");
+        this.textContent = dark ? "◑" : "◐";
+        this.setAttribute("aria-pressed", dark);
+      });
+      document.getElementById("btnHC").addEventListener("click", function () {
+        hc = !hc;
+        document.body.classList.toggle("hc", hc);
+        this.setAttribute("aria-pressed", hc);
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && navOpen) closeNav();
+      });
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href").slice(1);
+          if (!id) return;
+          const el = document.getElementById(id);
+          if (!el) return;
+          e.preventDefault();
+          window.scrollTo({
+            top: el.getBoundingClientRect().top + scrollY - 82,
+            behavior: "smooth",
+          });
+        });
+      });
+      document.querySelectorAll(".doc-row").forEach((d) => {
+        d.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") d.click();
+        });
+      });
+    </script>
+  </body>
+</html>
